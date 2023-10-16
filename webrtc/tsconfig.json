@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "esnext",
+    "lib":["es2023","DOM"],
+    "importsNotUsedAsValues":"error",
+    "sourceMap":true,
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "allowJs":true,
+    "checkJs":true,
+    "paths": {
+      "$lib":["src/lib"],
+      "$lib/*":["src/lib/*"],
+      "svelte/*": ["node_modules/svelte/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.svelte"],
+  "exclude": ["node_modules/*", "__sapper__/*", "dist/*"]
+}
