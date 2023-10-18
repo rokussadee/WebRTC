@@ -7,7 +7,9 @@
   let localVideo: HTMLNodeElement;
   let remoteVideo: HTMLNodeElement;
 
-  let webcamState;
+  let webcamState: boolean;
+
+  export let stream: MediaStream | null;
 
   webcamActive.subscribe((value) => {
     webcamState = value;
@@ -23,16 +25,14 @@
 
       localStream.getTracks().forEach(track => {
         pc.addTrack(track, localStream)
+
       }) 
 
       pc.ontrack = (e) => {
         e.streams[0].getTracks().forEach(track=> {
           remoteStream.addTrack(track)
         });
-
-        remoteVideo.srcObject = remoteStream
       }
-
     } catch(e) {
       console.error('Error accessing webcam:', e);
       
@@ -59,13 +59,26 @@
       remoteStream = null
     }
   }
+
+  function srcObject(node: HTMLNodeElement, stream: MediaStream) {
+    node.srcObject = stream;
+    return {
+      update(newStream: MediaStream) {
+        if (node.srcObject != newStream) {
+          node.srcObject = newStream;
+        }
+      }
+    }
+  }
   
 </script>
 
 <div>
   <div>
     {#if  webcamState }
-      <video bind:this={localVideo}>
+      video should be rendered
+      <video bind:this={localVideo} use:srcObject={localStream} autoplay playsinline>
+        <track kind="captions">
       </video>
     {:else}
       <button on:click={setupWebcam}>Start Webcam</button>
@@ -73,7 +86,8 @@
   </div>
   <div>
     {#if webcamState}
-      <video bind:this={remoteVideo}>
+      <video bind:this={remoteVideo} use:srcObject={remoteStream} autoplay playsinline>
+        <track kind="captions">
       </video>
     {/if}
   </div>

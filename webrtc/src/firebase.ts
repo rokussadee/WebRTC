@@ -25,4 +25,4 @@ const servers = {
 
 const pc = new RTCPeerConnection(servers)
 
-export { servers, firestore, pc }
+export { firestore, pc }
