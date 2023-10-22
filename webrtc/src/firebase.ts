@@ -1,4 +1,4 @@
-import { FirebaseOptions, getApp, initializeApp } from 'firebase/app';
+import { FirebaseOptions, getApp, initializeApp, type Firestore } from 'firebase/app';
 import {getFirestore} from 'firebase/firestore';
 import { firebaseConfig } from './firebaseconfig';
 
@@ -12,7 +12,7 @@ const createFirebaseApp = (config: FirebaseOptions) => {
 
 const firebaseApp = createFirebaseApp(firebaseConfig)
 
-const firestore = getFirestore(firebaseApp);
+const firestore: Firestore = getFirestore(firebaseApp);
 
 const servers = {
   iceServers: [

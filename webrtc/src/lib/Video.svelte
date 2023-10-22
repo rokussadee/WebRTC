@@ -1,6 +1,7 @@
 <script lang="ts">
   import {pc} from '../firebase';
-  import {webcamActive} from '../stores.ts';
+  import {callService} from '../services/callService.ts';
+  import {webcamActive, callId} from '../stores.ts';
 
   let localStream: MediaStream | null = null;
   let remoteStream: MediaStream | null = null;
@@ -8,20 +9,15 @@
   let remoteVideo: HTMLNodeElement;
 
   let webcamState: boolean;
-
-  export let stream: MediaStream | null;
-
-  webcamActive.subscribe((value) => {
-    webcamState = value;
-    console.log(webcamState, value)
-  })
-
+  let currentCallId: string;
 
   const setupWebcam = async () => {
     try {
-      localStream = await navigator.mediaDevices.getUserMedia({video:true,audio:false})
-      webcamActive.set(true)
+      console.log('gets here')
+      localStream = await navigator.mediaDevices.getUserMedia({video:true,audio:true})
       remoteStream = new MediaStream()
+
+      console.log(localStream)
 
       localStream.getTracks().forEach(track => {
         pc.addTrack(track, localStream)
@@ -33,6 +29,7 @@
           remoteStream.addTrack(track)
         });
       }
+      webcamActive.set(true)
     } catch(e) {
       console.error('Error accessing webcam:', e);
       
@@ -60,6 +57,14 @@
     }
   }
 
+  const call = async () => {
+    callService.initiateCall()
+  }
+
+  const answer = async () => {
+    callService.answerCall($callId)
+  }
+
   function srcObject(node: HTMLNodeElement, stream: MediaStream) {
     node.srcObject = stream;
     return {
@@ -75,26 +80,31 @@
 
 <div>
   <div>
-    {#if  webcamState }
+    {#if  $webcamActive }
       video should be rendered
       <video bind:this={localVideo} use:srcObject={localStream} autoplay playsinline>
         <track kind="captions">
       </video>
+      <button on:click={call}>Call</button>
     {:else}
       <button on:click={setupWebcam}>Start Webcam</button>
     {/if}
   </div>
   <div>
-    {#if webcamState}
+    {#if $webcamActive }
       <video bind:this={remoteVideo} use:srcObject={remoteStream} autoplay playsinline>
         <track kind="captions">
       </video>
     {/if}
   </div>
   <div>
-    {#if webcamState}
+    {#if $webcamActive }
       <button on:click={hangUp}>Hang Up</button>
     {/if}
+  </div>
+  <div>
+    <input type="text" bind:value={$callId}/>
+    <button on:click={answer}>Answer Call</button>
   </div>
 </div>
 
