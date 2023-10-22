@@ -4,16 +4,19 @@ import {pc, firestore} from '../firebase';
 import { callId } from '../stores';
 
 export const callService = {
-  async initiateCall() {
+  async initiateCall(roomId: string) {
+    console.log('call initiated')
     const callCollection = collection(firestore, 'calls')
-    const callDocRef = await addDoc(callCollection, {})
+//    const callDocRef = await addDoc(callCollection, {})
+    const callDocRef = doc(callCollection, roomId)
 
     const offerCandidatesCollection = collection(callDocRef,  'offerCandidates')
     const answerCandidatesCollection = collection(callDocRef,  'answerCandidates')
 
+    console.log(callDocRef.id, roomId)
     callId.set(callDocRef.id)
 
-    pc.onicecandidate = event => {
+    pc.onicecandidate = (event:any) => {
       event.candidate && addDoc(offerCandidatesCollection, event.candidate.toJSON())
     }
 
@@ -54,14 +57,17 @@ export const callService = {
     })
   },
 
-  async answerCall(callInput: string) {
+  async answerCall(roomId: string) {
     const callCollection = collection(firestore, 'calls')
-    const callDocRef = doc(callCollection, callInput)
+    const callDocRef = doc(callCollection, roomId)
+
+    console.log('calldockref id and roomid',callDocRef.id, roomId)
+    callId.set(callDocRef.id)
 
     const offerCandidatesCollection = collection(callDocRef,  'offerCandidates')
     const answerCandidatesCollection = collection(callDocRef,  'answerCandidates')
 
-    pc.onicecandidate = event => {
+    pc.onicecandidate = (event: any) => {
       event.candidate && addDoc(answerCandidatesCollection, event.candidate.toJSON())
     }
 

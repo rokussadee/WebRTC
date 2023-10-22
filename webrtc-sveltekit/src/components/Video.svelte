@@ -1,7 +1,12 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import {pc} from '../firebase';
   import {callService} from '../services/callService.ts';
   import {webcamActive, callId} from '../stores.ts';
+  import socket from "../clientsocket.ts";
+
+  export let isCreator: boolean;
+  export let roomId: string;
 
   let localStream: MediaStream | null = null;
   let remoteStream: MediaStream | null = null;
@@ -9,7 +14,17 @@
   let remoteVideo: HTMLNodeElement;
 
   let webcamState: boolean;
-  let currentCallId: string;
+
+  onMount(()=> {
+    setupWebcam()
+    .then(()=> {
+      if(!isCreator) {
+        answer()
+      } else {
+        call()
+      }
+    })
+  })
 
   const setupWebcam = async () => {
     try {
@@ -30,6 +45,8 @@
         });
       }
       webcamActive.set(true)
+
+
     } catch(e) {
       console.error('Error accessing webcam:', e);
       
@@ -58,11 +75,13 @@
   }
 
   const call = async () => {
-    callService.initiateCall()
+    console.log('$callId: ', $callId, 'roomId: ', roomId)
+    callService.initiateCall(roomId)
   }
 
   const answer = async () => {
-    callService.answerCall($callId)
+    console.log('$callId: ', $callId, 'roomId: ', roomId)
+    callService.answerCall(roomId)
   }
 
   function srcObject(node: HTMLNodeElement, stream: MediaStream) {
@@ -102,7 +121,6 @@
     {/if}
   </div>
   <div>
-    <input type="text" bind:value={$callId}/>
     <button on:click={answer}>Answer Call</button>
   </div>
 </div>

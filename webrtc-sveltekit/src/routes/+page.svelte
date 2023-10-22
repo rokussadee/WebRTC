@@ -4,6 +4,7 @@
   import socket from "../clientsocket.ts";
 
   let roomId: string;
+  let isCreator: boolean;
 
   onMount(()=> {
   
@@ -11,8 +12,9 @@
       console.log(message)
     })
   
-    socket.on('receive-room_id', (room_id) => {
+    socket.on('receive-room_id', (room_id, is_creator ) => {
       roomId = room_id
+      isCreator = is_creator
     })
   
   })
@@ -20,5 +22,5 @@
 
 <div>
   <p>You have joined {roomId}</p>
-  <Video />
+  <Video {isCreator} {roomId}/>
 </div>

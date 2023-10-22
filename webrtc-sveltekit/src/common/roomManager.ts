@@ -21,15 +21,7 @@ function joinLastCreatedRoom(socket: Socket) {
   }
 }
 
-function linkUserToRoom(room_id: number, user_db_id: number) {
-  console.log(roomData)
-  console.log(roomData[room_id].users)
-  roomData[room_id]['users'].push(user_db_id)
-}
-
 export {
   createNewRoom,
   joinLastCreatedRoom,
-  lastCreatedRoomID,
-  linkUserToRoom
 }
