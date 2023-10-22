@@ -1,15 +1,24 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import Video from '../components/Video.svelte'
-  import { io } from 'socket.io-client';
+  import socket from "../clientsocket.ts";
 
-  const socket = io()
+  let roomId: string;
 
-  socket.on('eventFromServer', (message)=> {
-    console.log(message)
+  onMount(()=> {
+  
+    socket.on('eventFromServer', (message)=> {
+      console.log(message)
+    })
+  
+    socket.on('receive-room_id', (room_id) => {
+      roomId = room_id
+    })
+  
   })
-
 </script>
 
 <div>
+  <p>You have joined {roomId}</p>
   <Video />
 </div>
