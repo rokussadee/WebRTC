@@ -1,4 +1,4 @@
-import type {  QuerySnapshot, DocumentChange, DocumentData, DocumentReference, CollectionReference, DocumentSnapshot } from 'firebase/firestore';
+import type {  QuerySnapshot, DocumentChange, DocumentData, DocumentSnapshot } from 'firebase/firestore';
 import {collection, doc, addDoc, setDoc, onSnapshot, getDoc, updateDoc} from 'firebase/firestore';
 import {pc, firestore} from '../firebase';
 import { callId } from '../stores';
