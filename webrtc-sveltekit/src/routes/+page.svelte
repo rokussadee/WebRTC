@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import Video from '../components/Video.svelte'
+  import Chat from '../components/Chat.svelte'
   import socket from "../clientsocket.ts";
 
   let roomId: string;
@@ -23,4 +24,5 @@
 <div>
   <p>You have joined {roomId}</p>
   <Video {isCreator} {roomId}/>
+  <Chat {roomId} />
 </div>

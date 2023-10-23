@@ -27,6 +27,19 @@ export const webSocketServer = {
       const room_id = joinLastCreatedRoom(socket)
       socket.emit('receive-room_id', room_id, is_creator)
 
+      socket.on('message', (data) => {
+        const messageObject = {
+          roomId: data.roomId,
+          text: data.text,
+          id: Date.now(),
+          author: socket.id
+        }
+      
+        // Broadcast the message to all participants in the room
+        io.to(room_id).emit('message', messageObject);
+      
+        // Store the message
+      });
     })
 
   }
