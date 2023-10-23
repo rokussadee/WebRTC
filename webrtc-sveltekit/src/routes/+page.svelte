@@ -20,9 +20,11 @@
   
   })
 </script>
-
-<div>
+<div class="mx-40">
   <p>You have joined {roomId}</p>
+<div class="flex">
   <Video {isCreator} {roomId}/>
+  <span class="divider-vertical h-20" />
   <Chat {roomId} />
+</div>
 </div>

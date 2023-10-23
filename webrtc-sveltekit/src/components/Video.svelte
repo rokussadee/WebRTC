@@ -100,26 +100,21 @@
   
 </script>
 
-<div>
-  <div>
+<div class="card p-4">
+  <div class="rounded-lg">
     {#if  $webcamActive }
-      <video bind:this={localVideo} use:srcObject={localStream} autoplay playsinline>
+      <video class="h-96 rounded-lg" bind:this={localVideo} use:srcObject={localStream} autoplay playsinline muted>
         <track kind="captions">
       </video>
     {:else}
       <button on:click={setupWebcam}>Start Webcam</button>
     {/if}
   </div>
-  <div>
+  <div class="rounded-lg">
     {#if $webcamActive }
-      <video bind:this={remoteVideo} use:srcObject={remoteStream} autoplay playsinline>
+      <video class="h-96 rounded-lg" bind:this={remoteVideo} use:srcObject={remoteStream} autoplay playsinline>
         <track kind="captions">
       </video>
-    {/if}
-  </div>
-  <div>
-    {#if $webcamActive }
-      <button on:click={hangUp}>Hang Up</button>
     {/if}
   </div>
 </div>

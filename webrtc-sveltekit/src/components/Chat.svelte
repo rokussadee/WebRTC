@@ -30,20 +30,50 @@
   };
 </script>
 
-<div>
+<div class="w-10/12 px-10">
   <ul>
     {#each messages as msg (msg.id)}
       {#if msg.author === socket.id}
-        <li class="authorMsg">{msg.text}</li>
+        
+<div class="grid grid-cols-[auto_1fr] gap-2">
+	<div class="card p-4 variant-soft rounded-tl-none space-y-2">
+		<header class="flex justify-between items-center">
+			<p class="font-bold">You</p>
+			<small class="opacity-50">{msg.id}</small>
+		</header>
+		<p>{msg.text}</p>
+	</div>
+</div>
+
       {:else}
-        <li class="peerMsg">{msg.text}</li>
+        
+<div class="grid grid-cols-[1fr_auto] gap-2">
+	<div class="card p-4 rounded-tr-none space-y-2">
+		<header class="flex justify-between items-center">
+			<p class="font-bold">Anonymous</p>
+			<small class="opacity-50">{msg.id}</small>
+		</header>
+		<p>{msg.text}</p>
+	</div>
+</div>
+
       {/if}
     {/each}
   </ul>
-  <input type="text" bind:value={message} on:keydown={(e) => e.key === 'Enter' && sendMessage()} />
-  <button on:click={sendMessage}>Send</button>
+  <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] rounded-container-token">
+	  <button class="input-group-shim">+</button>
+	<textarea
+   bind:value={message}
+   on:keydown={(e) => e.key === 'Enter' && sendMessage()}
+		class="bg-transparent border-0 ring-0"
+		name="prompt"
+		id="prompt"
+		placeholder="Write a message..."
+		rows="1"
+	/>
+	<button on:click={sendMessage} class="variant-filled-primary">Send</button>
 </div>
-
+</div>
 <style>
   .authorMsg {
     color: red;
