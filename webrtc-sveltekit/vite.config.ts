@@ -2,8 +2,6 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import type { ViteDevServer } from 'vite';
 import { defineConfig } from 'vitest/config';
 import {createNewRoom, joinLastCreatedRoom} from './src/common/roomManager.ts';
-import { callId } from './src/stores.js';
-import { get } from 'svelte/store';
 import {Server} from 'socket.io';
 
 export const webSocketServer = {

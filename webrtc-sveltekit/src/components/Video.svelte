@@ -24,6 +24,10 @@
         call()
       }
     })
+
+    return () => {
+      socket.disconnect();
+    };
   })
 
   const setupWebcam = async () => {
@@ -64,7 +68,6 @@
       localStream = null
     }
 
-
     if (remoteStream) {
       remoteStream.getTracks().forEach(track=> {
         track.stop()
@@ -103,7 +106,6 @@
       <video bind:this={localVideo} use:srcObject={localStream} autoplay playsinline>
         <track kind="captions">
       </video>
-      <button on:click={call}>Call</button>
     {:else}
       <button on:click={setupWebcam}>Start Webcam</button>
     {/if}
@@ -119,9 +121,6 @@
     {#if $webcamActive }
       <button on:click={hangUp}>Hang Up</button>
     {/if}
-  </div>
-  <div>
-    <button on:click={answer}>Answer Call</button>
   </div>
 </div>
 
