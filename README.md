@@ -1,4 +1,4 @@
-# WebRT + Socket.io + SveteKit + TypeScript
+# WebRTC + Socket.io + SveteKit + TypeScript
 
 Powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
 
